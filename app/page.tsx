@@ -1,106 +1,193 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+return ( <main className="min-h-screen bg-slate-50 text-slate-900">
+{/* Navigation */} <nav className="border-b border-slate-200 bg-white"> <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4"> <div> <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+Reflex </h1> <p className="text-xs text-slate-500">
+Delivery Coordination </p> </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+```
+      <div className="flex items-center gap-3">
+        <Link
+          href="/dispatcher"
+          className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+        >
+          Dispatcher
+        </Link>
+
+        <Link
+          href="/rider"
+          className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600"
+        >
+          Rider App
+        </Link>
+      </div>
+    </div>
+  </nav>
+
+  {/* Hero */}
+  <section className="px-6 py-20">
+    <div className="mx-auto max-w-7xl">
+      <div className="max-w-3xl">
+        <span className="inline-flex rounded-full bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-700">
+          Smarter delivery coordination
+        </span>
+
+        <h2 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
+          Coordinate deliveries.
+          <span className="block text-amber-500">
+            Keep everyone in sync.
+          </span>
+        </h2>
+
+        <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+          Reflex helps retailers, dispatchers, and riders manage
+          deliveries from order creation to successful delivery —
+          without relying on scattered WhatsApp messages and phone
+          calls.
+        </p>
+
+        <div className="mt-8 flex flex-wrap gap-4">
+          <Link
+            href="/dispatcher"
+            className="rounded-lg bg-slate-900 px-6 py-3 font-semibold text-white transition hover:bg-slate-800"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Open Dispatcher Dashboard
+          </Link>
+
+          <Link
+            href="/rider"
+            className="rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
           >
-            Read our docs
-          </a>
+            Open Rider App
+          </Link>
         </div>
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4">Mongoose Integration</h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            This project includes Mongoose for MongoDB integration. Check the <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">lib/mongoose.ts</code> file for database setup.
+      </div>
+    </div>
+  </section>
+
+  {/* How it works */}
+  <section className="border-y border-slate-200 bg-white px-6 py-16">
+    <div className="mx-auto max-w-7xl">
+      <div className="mb-10">
+        <h2 className="text-3xl font-bold text-slate-900">
+          How Reflex works
+        </h2>
+
+        <p className="mt-2 text-slate-600">
+          A simple delivery workflow for every team member.
+        </p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-3">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 font-bold text-amber-700">
+            1
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-900">
+            Create Order
+          </h3>
+
+          <p className="mt-2 leading-6 text-slate-600">
+            Retailers record customer details, delivery address,
+            items, and payment information.
           </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700">
+            2
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-900">
+            Assign Rider
+          </h3>
+
+          <p className="mt-2 leading-6 text-slate-600">
+            Dispatchers view pending orders and assign available
+            riders to each delivery.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">
+            3
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-900">
+            Complete Delivery
+          </h3>
+
+          <p className="mt-2 leading-6 text-slate-600">
+            Riders update the delivery status from pickup through
+            transit until the order is delivered.
+          </p>
+        </div>
+      </div>
     </div>
-  );
+  </section>
+
+  {/* Status flow */}
+  <section className="px-6 py-16">
+    <div className="mx-auto max-w-7xl">
+      <div className="rounded-2xl bg-slate-900 p-8 text-white sm:p-10">
+        <h2 className="text-2xl font-bold">
+          Real-time delivery workflow
+        </h2>
+
+        <p className="mt-2 max-w-2xl text-slate-300">
+          Every order follows a clear status journey so the team
+          knows exactly where a delivery stands.
+        </p>
+
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <span className="rounded-full bg-slate-700 px-4 py-2 text-sm font-semibold">
+            CREATED
+          </span>
+
+          <span className="text-slate-400">→</span>
+
+          <span className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold">
+            ASSIGNED
+          </span>
+
+          <span className="text-slate-400">→</span>
+
+          <span className="rounded-full bg-indigo-500 px-4 py-2 text-sm font-semibold">
+            PICKED UP
+          </span>
+
+          <span className="text-slate-400">→</span>
+
+          <span className="rounded-full bg-blue-500 px-4 py-2 text-sm font-semibold">
+            IN TRANSIT
+          </span>
+
+          <span className="text-slate-400">→</span>
+
+          <span className="rounded-full bg-green-500 px-4 py-2 text-sm font-semibold">
+            DELIVERED
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Footer */}
+  <footer className="border-t border-slate-200 bg-white px-6 py-8">
+    <div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 text-sm text-slate-500 sm:flex-row">
+      <p>© 2026 Reflex. Delivery coordination platform.</p>
+
+      <p>
+        Built for retailers, dispatchers, and riders.
+      </p>
+    </div>
+  </footer>
+</main>
+```
+
+);
 }
