@@ -25,14 +25,14 @@ const OrderSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: [
-        "CREATED",
-        "ASSIGNED",
-        "PROCESSING",
-        "SHIPPED",
-        "DELIVERED",
-        "CANCELLED",
-      ],
+     enum: [
+  "CREATED",
+  "ASSIGNED",
+  "PICKED_UP",
+  "IN_TRANSIT",
+  "DELIVERED",
+  "CANCELLED",
+],
       default: "CREATED",
     },
 
