@@ -64,14 +64,14 @@ export async function PATCH(
 
     // Update order status
     if (status) {
-      const allowedStatuses = [
-        "CREATED",
-        "ASSIGNED",
-        "PROCESSING",
-        "SHIPPED",
-        "DELIVERED",
-        "CANCELLED",
-      ];
+     const allowedStatuses = [
+  "CREATED",
+  "ASSIGNED",
+  "PICKED_UP",
+  "IN_TRANSIT",
+  "DELIVERED",
+  "CANCELLED",
+];
 
       if (!allowedStatuses.includes(status)) {
         return NextResponse.json(
