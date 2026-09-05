@@ -13,7 +13,7 @@ export default function RiderPage() {
   useEffect(() => { fetchOrders(); }, []);
 
   const updateStatus = async (id: string, newStatus: string) => {
-    await fetch(/api/orders/${id}, {
+   await fetch(`/api/orders/${id}`, {
       method: 'PATCH',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ status: newStatus }),
