@@ -5,27 +5,18 @@ import User from "@/models/User";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
-
-    // Read the request body
+    const { id } = await params;
     const body = await request.json();
 
     const { riderId, status } = body;
 
-    // Connect to MongoDB
     await connectToDatabase();
 
-    /*
-     * ==========================================
-     * RIDER ASSIGNMENT
-     * ==========================================
-     */
-
+    // Assign rider
     if (riderId) {
-      // Make sure the selected user is actually a rider
       const rider = await User.findOne({
         _id: riderId,
         role: "RIDER",
@@ -41,7 +32,6 @@ export async function PATCH(
         );
       }
 
-      // Find the order and assign the rider
       const order = await Order.findByIdAndUpdate(
         id,
         {
@@ -53,12 +43,8 @@ export async function PATCH(
           new: true,
           runValidators: true,
         }
-      ).populate(
-        "assignedRider",
-        "name email"
-      );
+      ).populate("assignedRider", "name email");
 
-      // Check whether the order exists
       if (!order) {
         return NextResponse.json(
           {
@@ -76,12 +62,7 @@ export async function PATCH(
       });
     }
 
-    /*
-     * ==========================================
-     * STATUS UPDATE
-     * ==========================================
-     */
-
+    // Update order status
     if (status) {
       const allowedStatuses = [
         "CREATED",
@@ -92,7 +73,6 @@ export async function PATCH(
         "CANCELLED",
       ];
 
-      // Check whether the status is valid
       if (!allowedStatuses.includes(status)) {
         return NextResponse.json(
           {
@@ -103,22 +83,17 @@ export async function PATCH(
         );
       }
 
-      // Update the order status
       const order = await Order.findByIdAndUpdate(
         id,
         {
-          status: status,
+          status,
         },
         {
           new: true,
           runValidators: true,
         }
-      ).populate(
-        "assignedRider",
-        "name email"
-      );
+      ).populate("assignedRider", "name email");
 
-      // Check whether the order exists
       if (!order) {
         return NextResponse.json(
           {
@@ -135,12 +110,6 @@ export async function PATCH(
         data: order,
       });
     }
-
-    /*
-     * ==========================================
-     * INVALID REQUEST
-     * ==========================================
-     */
 
     return NextResponse.json(
       {
