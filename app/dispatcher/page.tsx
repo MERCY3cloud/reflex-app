@@ -6,6 +6,7 @@ interface Rider {
   _id: string;
   name: string;
   email: string;
+  role: string;
 }
 
 interface Order {
@@ -24,8 +25,8 @@ export default function DispatcherPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [riders, setRiders] = useState<Rider[]>([]);
 
-  const [loadingOrders, setLoadingOrders] = useState(true);
-  const [loadingRiders, setLoadingRiders] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [selectedRiders, setSelectedRiders] = useState<
     Record<string, string>
@@ -35,16 +36,11 @@ export default function DispatcherPage() {
     null
   );
 
-  const [error, setError] = useState("");
-
   /*
-   * Fetch all orders.
+   * Fetch orders
    */
   const fetchOrders = async () => {
     try {
-      setLoadingOrders(true);
-      setError("");
-
       const response = await fetch("/api/orders");
 
       const result = await response.json();
@@ -57,20 +53,16 @@ export default function DispatcherPage() {
 
       setOrders(result.data || []);
     } catch (error) {
-      console.error("Error loading orders:", error);
-      setError("Unable to load orders.");
-    } finally {
-      setLoadingOrders(false);
+      console.error("Error fetching orders:", error);
+      setError("Failed to load orders.");
     }
   };
 
   /*
-   * Fetch all riders.
+   * Fetch riders
    */
   const fetchRiders = async () => {
     try {
-      setLoadingRiders(true);
-
       const response = await fetch("/api/users/riders");
 
       const result = await response.json();
@@ -83,23 +75,32 @@ export default function DispatcherPage() {
 
       setRiders(result.data || []);
     } catch (error) {
-      console.error("Error loading riders:", error);
-      setError("Unable to load riders.");
-    } finally {
-      setLoadingRiders(false);
+      console.error("Error fetching riders:", error);
+      setError("Failed to load riders.");
     }
   };
 
   /*
-   * Load orders and riders when page opens.
+   * Load orders and riders when dashboard opens
    */
   useEffect(() => {
-    fetchOrders();
-    fetchRiders();
+    const loadDashboard = async () => {
+      setLoading(true);
+      setError("");
+
+      await Promise.all([
+        fetchOrders(),
+        fetchRiders(),
+      ]);
+
+      setLoading(false);
+    };
+
+    loadDashboard();
   }, []);
 
   /*
-   * Handle rider selection.
+   * Handle rider selection
    */
   const handleRiderChange = (
     orderId: string,
@@ -112,7 +113,7 @@ export default function DispatcherPage() {
   };
 
   /*
-   * Assign the selected rider to an order.
+   * Assign selected rider to order
    */
   const assignRider = async (orderId: string) => {
     const riderId = selectedRiders[orderId];
@@ -134,7 +135,7 @@ export default function DispatcherPage() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            riderId,
+            riderId: riderId,
           }),
         }
       );
@@ -148,7 +149,8 @@ export default function DispatcherPage() {
       }
 
       /*
-       * Refresh the orders after assignment.
+       * Refresh orders so the newly assigned
+       * order moves to the assigned section.
        */
       await fetchOrders();
 
@@ -157,7 +159,9 @@ export default function DispatcherPage() {
        */
       setSelectedRiders((previous) => {
         const updated = { ...previous };
+
         delete updated[orderId];
+
         return updated;
       });
     } catch (error) {
@@ -169,7 +173,7 @@ export default function DispatcherPage() {
   };
 
   /*
-   * Update order status.
+   * Update order status
    */
   const updateStatus = async (
     orderId: string,
@@ -187,7 +191,7 @@ export default function DispatcherPage() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            status,
+            status: status,
           }),
         }
       );
@@ -202,7 +206,11 @@ export default function DispatcherPage() {
 
       await fetchOrders();
     } catch (error) {
-      console.error("Error updating status:", error);
+      console.error(
+        "Error updating order status:",
+        error
+      );
+
       setError("Failed to update order status.");
     } finally {
       setUpdatingOrder(null);
@@ -210,14 +218,14 @@ export default function DispatcherPage() {
   };
 
   /*
-   * Orders that have not been assigned yet.
+   * Orders that still need a rider
    */
   const pendingOrders = orders.filter(
     (order) => order.status === "CREATED"
   );
 
   /*
-   * Orders that already have riders.
+   * Orders that already have a rider
    */
   const assignedOrders = orders.filter(
     (order) =>
@@ -226,34 +234,74 @@ export default function DispatcherPage() {
       order.status === "SHIPPED"
   );
 
+  /*
+   * Orders that are completed
+   */
+  const deliveredOrders = orders.filter(
+    (order) => order.status === "DELIVERED"
+  );
+
+  /*
+   * Loading screen
+   */
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-slate-100 p-8">
+        <div className="mx-auto max-w-7xl">
+          <h1 className="text-3xl font-bold text-slate-800">
+            Dispatcher Dashboard
+          </h1>
+
+          <p className="mt-4 text-slate-600">
+            Loading dashboard...
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-slate-100 p-6 md:p-10">
+
       <div className="mx-auto max-w-7xl">
 
-        {/* Header */}
+        {/* =========================================
+            HEADER
+        ========================================== */}
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-800">
             Dispatcher Dashboard
           </h1>
 
           <p className="mt-2 text-slate-600">
-            Manage delivery orders, assign riders, and monitor
-            delivery status.
+            Manage orders, assign riders, and monitor
+            delivery progress.
           </p>
         </div>
 
-        {/* Error message */}
+
+        {/* =========================================
+            ERROR MESSAGE
+        ========================================== */}
+
         {error && (
           <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
             {error}
           </div>
         )}
 
-        {/* Dashboard statistics */}
-        <div className="mb-8 grid gap-4 md:grid-cols-3">
 
-          <div className="rounded-xl bg-white p-5 shadow-sm">
-            <p className="text-sm text-slate-500">
+        {/* =========================================
+            DASHBOARD STATISTICS
+        ========================================== */}
+
+        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+          {/* Total Orders */}
+
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-medium text-slate-500">
               Total Orders
             </p>
 
@@ -262,9 +310,12 @@ export default function DispatcherPage() {
             </p>
           </div>
 
-          <div className="rounded-xl bg-white p-5 shadow-sm">
-            <p className="text-sm text-slate-500">
-              Waiting for Assignment
+
+          {/* Pending Orders */}
+
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-medium text-slate-500">
+              Awaiting Assignment
             </p>
 
             <p className="mt-2 text-3xl font-bold text-amber-600">
@@ -272,19 +323,39 @@ export default function DispatcherPage() {
             </p>
           </div>
 
-          <div className="rounded-xl bg-white p-5 shadow-sm">
-            <p className="text-sm text-slate-500">
-              Available Riders
+
+          {/* Riders */}
+
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-medium text-slate-500">
+              Riders
+            </p>
+
+            <p className="mt-2 text-3xl font-bold text-blue-600">
+              {riders.length}
+            </p>
+          </div>
+
+
+          {/* Delivered */}
+
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <p className="text-sm font-medium text-slate-500">
+              Delivered
             </p>
 
             <p className="mt-2 text-3xl font-bold text-green-600">
-              {riders.length}
+              {deliveredOrders.length}
             </p>
           </div>
 
         </div>
 
-        {/* Pending Orders */}
+
+        {/* =========================================
+            ORDERS WAITING FOR ASSIGNMENT
+        ========================================== */}
+
         <section className="mb-10">
 
           <div className="mb-4">
@@ -292,37 +363,39 @@ export default function DispatcherPage() {
               Orders Waiting for Assignment
             </h2>
 
-            <p className="text-sm text-slate-500">
-              Select a rider and assign the order.
+            <p className="mt-1 text-sm text-slate-500">
+              Select a rider and assign the delivery.
             </p>
           </div>
 
-          {loadingOrders || loadingRiders ? (
-            <div className="rounded-xl bg-white p-8 text-center shadow-sm">
-              <p className="text-slate-600">
-                Loading dashboard...
-              </p>
-            </div>
-          ) : pendingOrders.length === 0 ? (
+
+          {pendingOrders.length === 0 ? (
+
             <div className="rounded-xl bg-white p-8 text-center shadow-sm">
               <p className="font-medium text-slate-700">
                 No orders are waiting for assignment.
               </p>
             </div>
+
           ) : (
+
             <div className="space-y-4">
 
               {pendingOrders.map((order) => (
+
                 <div
                   key={order._id}
                   className="rounded-xl bg-white p-6 shadow-sm"
                 >
 
-                  <div className="grid gap-6 lg:grid-cols-[1fr_auto]">
+                  <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
 
-                    {/* Order information */}
+                    {/* Order details */}
+
                     <div>
-                      <div className="mb-3 flex items-center gap-3">
+
+                      <div className="mb-4 flex flex-wrap items-center gap-3">
+
                         <h3 className="text-lg font-bold text-slate-800">
                           {order.customerName}
                         </h3>
@@ -330,36 +403,43 @@ export default function DispatcherPage() {
                         <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
                           {order.status}
                         </span>
+
                       </div>
 
-                      <div className="space-y-2 text-sm">
+
+                      <div className="space-y-2 text-sm text-slate-600">
+
                         <p>
-                          <span className="font-semibold">
+                          <span className="font-semibold text-slate-800">
                             Address:
                           </span>{" "}
                           {order.address}
                         </p>
 
                         <p>
-                          <span className="font-semibold">
+                          <span className="font-semibold text-slate-800">
                             Items:
                           </span>{" "}
                           {order.items}
                         </p>
 
                         <p>
-                          <span className="font-semibold">
+                          <span className="font-semibold text-slate-800">
                             Deposit:
                           </span>{" "}
                           {order.depositPaid
                             ? "Paid"
                             : "Not Paid"}
                         </p>
+
                       </div>
+
                     </div>
 
-                    {/* Assignment controls */}
-                    <div className="flex min-w-[260px] flex-col gap-3">
+
+                    {/* Rider assignment */}
+
+                    <div className="flex flex-col gap-3">
 
                       <label
                         htmlFor={`rider-${order._id}`}
@@ -367,6 +447,7 @@ export default function DispatcherPage() {
                       >
                         Select Rider
                       </label>
+
 
                       <select
                         id={`rider-${order._id}`}
@@ -379,21 +460,26 @@ export default function DispatcherPage() {
                             event.target.value
                           )
                         }
-                        className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-amber-500"
+                        className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-amber-500"
                       >
+
                         <option value="">
                           Choose a rider
                         </option>
 
                         {riders.map((rider) => (
+
                           <option
                             key={rider._id}
                             value={rider._id}
                           >
                             {rider.name}
                           </option>
+
                         ))}
+
                       </select>
+
 
                       <button
                         type="button"
@@ -401,8 +487,8 @@ export default function DispatcherPage() {
                           assignRider(order._id)
                         }
                         disabled={
-                          updatingOrder === order._id ||
-                          !selectedRiders[order._id]
+                          !selectedRiders[order._id] ||
+                          updatingOrder === order._id
                         }
                         className="rounded-lg bg-amber-500 px-4 py-2 font-semibold text-white transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
                       >
@@ -414,15 +500,22 @@ export default function DispatcherPage() {
                     </div>
 
                   </div>
+
                 </div>
+
               ))}
 
             </div>
+
           )}
 
         </section>
 
-        {/* Assigned Orders */}
+
+        {/* =========================================
+            ASSIGNED DELIVERIES
+        ========================================== */}
+
         <section>
 
           <div className="mb-4">
@@ -430,91 +523,127 @@ export default function DispatcherPage() {
               Assigned Deliveries
             </h2>
 
-            <p className="text-sm text-slate-500">
-              Monitor orders that have already been assigned.
+            <p className="mt-1 text-sm text-slate-500">
+              Monitor assigned orders and update their status.
             </p>
           </div>
 
+
           {assignedOrders.length === 0 ? (
+
             <div className="rounded-xl bg-white p-8 text-center shadow-sm">
               <p className="text-slate-600">
                 No assigned deliveries yet.
               </p>
             </div>
+
           ) : (
+
             <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
 
-              <table className="w-full min-w-[700px]">
+              <table className="w-full min-w-[850px]">
 
                 <thead className="border-b bg-slate-50">
+
                   <tr>
-                    <th className="px-5 py-4 text-left text-sm font-semibold">
+
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-slate-700">
                       Customer
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-slate-700">
                       Address
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-slate-700">
                       Rider
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold">
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-slate-700">
                       Status
                     </th>
 
-                    <th className="px-5 py-4 text-left text-sm font-semibold">
-                      Action
+                    <th className="px-5 py-4 text-left text-sm font-semibold text-slate-700">
+                      Update
                     </th>
+
                   </tr>
+
                 </thead>
+
 
                 <tbody>
 
                   {assignedOrders.map((order) => (
+
                     <tr
                       key={order._id}
                       className="border-b last:border-b-0"
                     >
 
+                      {/* Customer */}
+
                       <td className="px-5 py-4">
-                        <p className="font-semibold">
+
+                        <p className="font-semibold text-slate-800">
                           {order.customerName}
                         </p>
 
                         <p className="text-xs text-slate-500">
                           {order.items}
                         </p>
+
                       </td>
 
-                      <td className="px-5 py-4 text-sm">
+
+                      {/* Address */}
+
+                      <td className="px-5 py-4 text-sm text-slate-600">
                         {order.address}
                       </td>
 
-                      <td className="px-5 py-4 text-sm">
+
+                      {/* Rider */}
+
+                      <td className="px-5 py-4">
+
                         {order.assignedRider ? (
+
                           <div>
-                            <p className="font-semibold">
+
+                            <p className="font-semibold text-slate-800">
                               {order.assignedRider.name}
                             </p>
 
                             <p className="text-xs text-slate-500">
                               {order.assignedRider.email}
                             </p>
+
                           </div>
+
                         ) : (
-                          <span className="text-slate-400">
-                            No rider
+
+                          <span className="text-sm text-red-500">
+                            No rider assigned
                           </span>
+
                         )}
+
                       </td>
 
+
+                      {/* Status */}
+
                       <td className="px-5 py-4">
+
                         <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
                           {order.status}
                         </span>
+
                       </td>
+
+
+                      {/* Status update */}
 
                       <td className="px-5 py-4">
 
@@ -529,8 +658,9 @@ export default function DispatcherPage() {
                               event.target.value
                             )
                           }
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-500"
                         >
+
                           <option value="ASSIGNED">
                             Assigned
                           </option>
@@ -550,11 +680,13 @@ export default function DispatcherPage() {
                           <option value="CANCELLED">
                             Cancelled
                           </option>
+
                         </select>
 
                       </td>
 
                     </tr>
+
                   ))}
 
                 </tbody>
@@ -562,11 +694,13 @@ export default function DispatcherPage() {
               </table>
 
             </div>
+
           )}
 
         </section>
 
       </div>
+
     </main>
   );
 }
