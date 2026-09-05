@@ -2,97 +2,79 @@
 
 import Link from "next/link";
 
-const deliveries = [
+const orders = [
   {
     id: "#1048",
     customer: "Grace Wanjiku",
-    destination: "Westlands, Nairobi",
+    location: "Westlands, Nairobi",
     rider: "Brian K.",
     status: "IN TRANSIT",
-    time: "12 min",
   },
   {
     id: "#1047",
     customer: "David Mwangi",
-    destination: "Kilimani, Nairobi",
+    location: "Kilimani, Nairobi",
     rider: "Kevin M.",
     status: "PICKED UP",
-    time: "24 min",
   },
   {
     id: "#1046",
     customer: "Anne Njeri",
-    destination: "Lavington, Nairobi",
+    location: "Lavington, Nairobi",
     rider: "Sarah W.",
     status: "ASSIGNED",
-    time: "38 min",
-  },
-];
-
-const workflow = [
-  {
-    number: "01",
-    title: "Create",
-    text: "Capture the order, customer and delivery details in one place.",
-  },
-  {
-    number: "02",
-    title: "Assign",
-    text: "Dispatchers assign each delivery to the right available rider.",
-  },
-  {
-    number: "03",
-    title: "Track",
-    text: "Follow every delivery as it moves from pickup to completion.",
   },
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f7f8fa] text-[#111827]">
-      {/* NAVIGATION */}
-      <header className="border-b border-white/10 bg-[#0b1220]">
+    <main className="min-h-screen bg-white text-black">
+
+      {/* NAVBAR */}
+      <header className="border-b border-black bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
+
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f4b740] text-lg font-black text-[#0b1220]">
+            <div className="flex h-9 w-9 items-center justify-center bg-black text-sm font-black text-white">
               R
             </div>
 
             <div>
-              <div className="text-lg font-black tracking-tight text-white">
+              <p className="text-lg font-black tracking-[-0.04em]">
                 reflex
-              </div>
-              <div className="text-[9px] font-bold uppercase tracking-[0.22em] text-slate-500">
+              </p>
+
+              <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-neutral-500">
                 Delivery operations
-              </div>
+              </p>
             </div>
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
             <a
-              href="#workflow"
-              className="text-sm font-medium text-slate-400 transition hover:text-white"
+              href="#how"
+              className="text-sm font-medium text-neutral-600 hover:text-black"
             >
               How it works
             </a>
 
             <a
               href="#operations"
-              className="text-sm font-medium text-slate-400 transition hover:text-white"
+              className="text-sm font-medium text-neutral-600 hover:text-black"
             >
               Operations
             </a>
 
             <Link
               href="/dispatcher"
-              className="text-sm font-semibold text-white transition hover:text-[#f4b740]"
+              className="text-sm font-bold text-black"
             >
               Dispatcher
             </Link>
 
             <Link
               href="/rider"
-              className="rounded-lg bg-[#f4b740] px-5 py-2.5 text-sm font-bold text-[#0b1220] transition hover:bg-[#ffd166]"
+              className="bg-black px-5 py-2.5 text-sm font-bold text-white transition hover:bg-neutral-800"
             >
               Rider App
             </Link>
@@ -100,7 +82,7 @@ export default function Home() {
 
           <Link
             href="/dispatcher"
-            className="rounded-lg bg-[#f4b740] px-4 py-2.5 text-sm font-bold text-[#0b1220] md:hidden"
+            className="bg-black px-4 py-2.5 text-sm font-bold text-white md:hidden"
           >
             Open App
           </Link>
@@ -108,371 +90,419 @@ export default function Home() {
       </header>
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-[#0b1220]">
-        <div className="absolute right-[-160px] top-[-180px] h-[500px] w-[500px] rounded-full bg-[#f4b740]/10 blur-3xl" />
+      <section className="border-b border-black bg-black text-white">
+        <div className="mx-auto grid max-w-7xl gap-16 px-6 py-20 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-28">
 
-        <div className="absolute bottom-[-220px] left-[-150px] h-[450px] w-[450px] rounded-full bg-blue-500/10 blur-3xl" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-16 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8 lg:py-28">
-          {/* LEFT */}
+          {/* HERO COPY */}
           <div>
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
 
-              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-300">
-                Delivery operations platform
-              </span>
-            </div>
+            <p className="mb-8 text-xs font-bold uppercase tracking-[0.3em] text-neutral-400">
+              Delivery coordination platform
+            </p>
 
-            <h1 className="max-w-2xl text-5xl font-black leading-[0.95] tracking-[-0.045em] text-white sm:text-6xl lg:text-7xl">
-              Every delivery.
-              <span className="block text-[#f4b740]">
+            <h1 className="max-w-3xl text-6xl font-black leading-[0.9] tracking-[-0.06em] sm:text-7xl lg:text-[88px]">
+              Deliveries.
+              <br />
+              <span className="text-neutral-500">
                 Under control.
               </span>
             </h1>
 
-            <p className="mt-7 max-w-xl text-lg leading-8 text-slate-400">
-              Reflex connects retailers, dispatchers and riders in one
-              operational workspace — replacing scattered calls and
-              WhatsApp messages with a clear delivery workflow.
+            <p className="mt-8 max-w-xl text-lg leading-8 text-neutral-400">
+              Reflex gives retailers, dispatchers and riders one
+              workspace to create, assign and track every delivery.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap gap-3">
+
               <Link
                 href="/dispatcher"
-                className="group flex items-center gap-3 rounded-xl bg-[#f4b740] px-6 py-3.5 text-sm font-black text-[#0b1220] transition hover:-translate-y-0.5 hover:bg-[#ffd166]"
+                className="bg-white px-7 py-4 text-sm font-black text-black transition hover:bg-neutral-200"
               >
-                Open Dispatcher
-                <span className="transition-transform group-hover:translate-x-1">
-                  →
-                </span>
+                Open Dispatcher →
               </Link>
 
               <Link
                 href="/rider"
-                className="rounded-xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/[0.08]"
+                className="border border-neutral-600 px-7 py-4 text-sm font-bold text-white transition hover:border-white"
               >
-                Open Rider App
+                Rider App
               </Link>
+
             </div>
 
-            <div className="mt-9 grid max-w-lg grid-cols-3 border-y border-white/10 py-5">
+            <div className="mt-12 flex items-center gap-6 border-t border-neutral-800 pt-6">
+
               <div>
-                <p className="text-2xl font-black text-white">24</p>
-                <p className="mt-1 text-[11px] text-slate-500">
+                <p className="text-2xl font-black">24</p>
+                <p className="mt-1 text-xs text-neutral-500">
                   Orders today
                 </p>
               </div>
 
-              <div className="border-l border-white/10 pl-5">
-                <p className="text-2xl font-black text-white">18</p>
-                <p className="mt-1 text-[11px] text-slate-500">
-                  Active deliveries
+              <div className="h-10 w-px bg-neutral-800" />
+
+              <div>
+                <p className="text-2xl font-black">18</p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Active
                 </p>
               </div>
 
-              <div className="border-l border-white/10 pl-5">
-                <p className="text-2xl font-black text-[#f4b740]">94%</p>
-                <p className="mt-1 text-[11px] text-slate-500">
-                  Completed
+              <div className="h-10 w-px bg-neutral-800" />
+
+              <div>
+                <p className="text-2xl font-black">06</p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Delivered
                 </p>
               </div>
+
             </div>
           </div>
 
-          {/* OPERATIONS PANEL */}
-          <div id="operations" className="relative">
-            <div className="absolute -inset-5 rounded-[2rem] bg-[#f4b740]/5 blur-2xl" />
+          {/* PRODUCT PREVIEW */}
+          <div id="operations">
 
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#111b2d] shadow-2xl">
-              {/* PANEL HEADER */}
-              <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+            <div className="border border-neutral-700 bg-[#0a0a0a]">
+
+              {/* TOP BAR */}
+              <div className="flex items-center justify-between border-b border-neutral-800 px-5 py-4">
+
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
-                    Dispatcher workspace
+                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-500">
+                    Reflex / Dispatcher
                   </p>
 
-                  <h2 className="mt-1 text-lg font-black text-white">
-                    Today&apos;s operations
-                  </h2>
+                  <p className="mt-1 text-sm font-bold">
+                    Operations
+                  </p>
                 </div>
 
-                <div className="flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-
-                  <span className="text-[10px] font-bold text-emerald-400">
-                    LIVE
-                  </span>
+                <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-wider text-neutral-400">
+                  <span className="h-2 w-2 bg-white" />
+                  Live
                 </div>
+
               </div>
 
               {/* METRICS */}
-              <div className="grid grid-cols-3 gap-px border-b border-white/10 bg-white/10">
-                <div className="bg-[#111b2d] px-5 py-5">
-                  <p className="text-2xl font-black text-white">24</p>
-                  <p className="mt-1 text-[10px] text-slate-500">
-                    Total orders
+              <div className="grid grid-cols-3 border-b border-neutral-800">
+
+                <div className="border-r border-neutral-800 p-5">
+                  <p className="text-2xl font-black">24</p>
+                  <p className="mt-1 text-[10px] text-neutral-500">
+                    Total
                   </p>
                 </div>
 
-                <div className="bg-[#111b2d] px-5 py-5">
-                  <p className="text-2xl font-black text-[#f4b740]">18</p>
-                  <p className="mt-1 text-[10px] text-slate-500">
-                    In progress
+                <div className="border-r border-neutral-800 p-5">
+                  <p className="text-2xl font-black">18</p>
+                  <p className="mt-1 text-[10px] text-neutral-500">
+                    Active
                   </p>
                 </div>
 
-                <div className="bg-[#111b2d] px-5 py-5">
-                  <p className="text-2xl font-black text-emerald-400">6</p>
-                  <p className="mt-1 text-[10px] text-slate-500">
+                <div className="p-5">
+                  <p className="text-2xl font-black">06</p>
+                  <p className="mt-1 text-[10px] text-neutral-500">
                     Delivered
                   </p>
                 </div>
+
               </div>
 
-              {/* ORDERS */}
-              <div className="p-4">
-                <div className="mb-3 flex items-center justify-between">
-                  <p className="text-xs font-bold text-white">
+              {/* ORDER LIST */}
+              <div className="p-5">
+
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="text-xs font-bold">
                     Active deliveries
                   </p>
 
-                  <span className="text-[10px] font-medium text-slate-500">
-                    3 shown
+                  <span className="text-[10px] text-neutral-600">
+                    Today
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  {deliveries.map((delivery) => (
+
+                  {orders.map((order) => (
                     <div
-                      key={delivery.id}
-                      className="rounded-xl border border-white/10 bg-white/[0.025] p-4 transition hover:bg-white/[0.05]"
+                      key={order.id}
+                      className="border border-neutral-800 bg-[#111111] p-4"
                     >
+
                       <div className="flex items-start justify-between gap-4">
+
                         <div className="flex gap-3">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f4b740] text-[10px] font-black text-[#0b1220]">
-                            {delivery.id.replace("#", "")}
+
+                          <div className="flex h-9 w-9 items-center justify-center border border-neutral-700 text-[9px] font-black">
+                            {order.id.replace("#", "")}
                           </div>
 
                           <div>
-                            <p className="text-sm font-bold text-white">
-                              {delivery.customer}
+                            <p className="text-sm font-bold">
+                              {order.customer}
                             </p>
 
-                            <p className="mt-0.5 text-[11px] text-slate-500">
-                              {delivery.destination}
+                            <p className="mt-1 text-[10px] text-neutral-500">
+                              {order.location}
                             </p>
                           </div>
+
                         </div>
 
-                        <span
-                          className={`rounded-full px-2.5 py-1 text-[8px] font-black tracking-wide ${
-                            delivery.status === "IN TRANSIT"
-                              ? "bg-blue-400/10 text-blue-400"
-                              : delivery.status === "PICKED UP"
-                                ? "bg-purple-400/10 text-purple-400"
-                                : "bg-amber-400/10 text-amber-400"
-                          }`}
-                        >
-                          {delivery.status}
-                        </span>
-                      </div>
-
-                      <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-3">
-                        <span className="text-[10px] text-slate-500">
-                          Rider:{" "}
-                          <span className="font-semibold text-slate-300">
-                            {delivery.rider}
-                          </span>
+                        <span className="border border-neutral-700 px-2 py-1 text-[8px] font-bold tracking-wider text-neutral-300">
+                          {order.status}
                         </span>
 
-                        <span className="text-[10px] font-semibold text-slate-500">
-                          {delivery.time}
-                        </span>
                       </div>
+
+                      <div className="mt-4 flex justify-between border-t border-neutral-800 pt-3">
+
+                        <p className="text-[10px] text-neutral-600">
+                          Rider
+                        </p>
+
+                        <p className="text-[10px] font-bold text-neutral-300">
+                          {order.rider}
+                        </p>
+
+                      </div>
+
                     </div>
                   ))}
+
                 </div>
 
                 <Link
                   href="/dispatcher"
-                  className="mt-3 flex w-full items-center justify-center rounded-xl border border-white/10 py-3 text-xs font-bold text-slate-300 transition hover:bg-white/[0.04] hover:text-white"
+                  className="mt-3 flex items-center justify-center border border-neutral-700 py-3 text-[10px] font-bold uppercase tracking-wider text-neutral-400 transition hover:border-white hover:text-white"
                 >
-                  View dispatcher dashboard →
+                  Open dashboard →
                 </Link>
+
               </div>
+
             </div>
           </div>
         </div>
       </section>
 
-      {/* WORKFLOW */}
-      <section id="workflow" className="bg-white px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      {/* HOW IT WORKS */}
+      <section id="how" className="border-b border-neutral-200 bg-white">
+
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+
+          <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#c88d13]">
-                One connected workflow
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-neutral-400">
+                How it works
               </p>
 
-              <h2 className="mt-3 max-w-2xl text-4xl font-black tracking-[-0.03em] text-[#111827] sm:text-5xl">
-                From order created to order delivered.
+              <h2 className="mt-5 text-4xl font-black leading-tight tracking-[-0.04em] sm:text-5xl">
+                One system.
+                <br />
+                Three roles.
               </h2>
             </div>
 
-            <p className="max-w-md text-sm leading-6 text-slate-500">
-              Everyone works from the same delivery status, so nothing
-              gets lost between the retailer, dispatcher and rider.
-            </p>
-          </div>
+            <div className="grid divide-y border-y border-black md:grid-cols-3 md:divide-x md:divide-y-0">
 
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {workflow.map((item) => (
-              <div
-                key={item.number}
-                className="group rounded-2xl border border-slate-200 bg-[#f8fafc] p-7 transition duration-300 hover:-translate-y-1 hover:border-[#f4b740] hover:shadow-xl"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-black tracking-[0.2em] text-[#f4b740]">
-                    {item.number}
-                  </span>
-
-                  <span className="text-slate-300 transition group-hover:text-[#f4b740]">
-                    ↗
-                  </span>
-                </div>
-
-                <h3 className="mt-10 text-2xl font-black text-[#111827]">
-                  {item.title}
-                </h3>
-
-                <p className="mt-3 text-sm leading-7 text-slate-500">
-                  {item.text}
+              <div className="py-8 md:px-7">
+                <p className="text-xs font-black text-neutral-400">
+                  01
                 </p>
 
-                <div className="mt-8 h-1 w-8 rounded-full bg-[#f4b740] transition-all duration-300 group-hover:w-16" />
+                <h3 className="mt-12 text-xl font-black">
+                  Create
+                </h3>
+
+                <p className="mt-3 text-sm leading-6 text-neutral-500">
+                  Retailers capture customer and delivery details.
+                </p>
               </div>
-            ))}
+
+              <div className="py-8 md:px-7">
+                <p className="text-xs font-black text-neutral-400">
+                  02
+                </p>
+
+                <h3 className="mt-12 text-xl font-black">
+                  Assign
+                </h3>
+
+                <p className="mt-3 text-sm leading-6 text-neutral-500">
+                  Dispatchers assign orders to available riders.
+                </p>
+              </div>
+
+              <div className="py-8 md:px-7">
+                <p className="text-xs font-black text-neutral-400">
+                  03
+                </p>
+
+                <h3 className="mt-12 text-xl font-black">
+                  Deliver
+                </h3>
+
+                <p className="mt-3 text-sm leading-6 text-neutral-500">
+                  Riders update the delivery until it is complete.
+                </p>
+              </div>
+
+            </div>
           </div>
         </div>
       </section>
 
-      {/* STATUS SECTION */}
-      <section className="bg-[#f7f8fa] px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="overflow-hidden rounded-3xl bg-[#0b1220]">
-            <div className="grid lg:grid-cols-[0.8fr_1.2fr]">
-              <div className="p-8 sm:p-12 lg:p-16">
-                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#f4b740]">
-                  Clear status tracking
+      {/* STATUS */}
+      <section className="bg-[#f5f5f5]">
+
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+
+          <div className="border border-black bg-white">
+
+            <div className="grid lg:grid-cols-2">
+
+              <div className="border-b border-black p-8 lg:border-b-0 lg:border-r lg:p-14">
+
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-neutral-400">
+                  Order lifecycle
                 </p>
 
-                <h2 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl">
-                  No more guessing where an order is.
+                <h2 className="mt-5 max-w-md text-4xl font-black leading-tight tracking-[-0.04em]">
+                  Always know what happens next.
                 </h2>
 
-                <p className="mt-5 max-w-md text-sm leading-7 text-slate-400">
-                  Reflex gives every delivery a clear progression that
-                  the entire team can understand.
+                <p className="mt-5 max-w-md text-sm leading-7 text-neutral-500">
+                  Every delivery moves through a defined sequence,
+                  giving the whole team one shared view of progress.
                 </p>
+
               </div>
 
-              <div className="border-t border-white/10 p-6 sm:p-10 lg:border-l lg:border-t-0">
-                <div className="space-y-3">
+              <div className="p-6 lg:p-10">
+
+                <div className="space-y-2">
+
                   {[
                     ["01", "CREATED", "Order received"],
                     ["02", "ASSIGNED", "Rider selected"],
-                    ["03", "PICKED UP", "Rider has the order"],
-                    ["04", "IN TRANSIT", "Delivery is on the way"],
-                    ["05", "DELIVERED", "Customer received order"],
+                    ["03", "PICKED UP", "Order collected"],
+                    ["04", "IN TRANSIT", "Delivery on the way"],
+                    ["05", "DELIVERED", "Order completed"],
                   ].map(([number, status, description]) => (
                     <div
                       key={status}
-                      className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.035] p-4"
+                      className="flex items-center gap-4 border border-neutral-200 p-4"
                     >
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f4b740] text-[10px] font-black text-[#0b1220]">
+
+                      <span className="text-[10px] font-black text-neutral-400">
                         {number}
                       </span>
 
+                      <div className="h-1.5 w-1.5 bg-black" />
+
                       <div className="flex-1">
-                        <p className="text-xs font-black text-white">
+                        <p className="text-xs font-black">
                           {status}
                         </p>
 
-                        <p className="mt-1 text-[10px] text-slate-500">
+                        <p className="mt-1 text-[10px] text-neutral-500">
                           {description}
                         </p>
                       </div>
 
-                      <span className="text-slate-600">→</span>
+                      <span className="text-neutral-300">
+                        →
+                      </span>
+
                     </div>
                   ))}
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
+
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-white px-6 py-24 lg:px-8">
+      <section className="border-t border-black bg-black px-6 py-24 text-white lg:px-8">
+
         <div className="mx-auto max-w-4xl text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#0b1220] text-lg font-black text-[#f4b740]">
-            R
-          </div>
 
-          <h2 className="mt-6 text-4xl font-black tracking-[-0.03em] text-[#111827] sm:text-5xl">
-            Put your deliveries in motion.
-          </h2>
-
-          <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-slate-500">
-            One place for orders. One workflow for your team. One clear
-            view of what is happening.
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-neutral-500">
+            Reflex
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <h2 className="mt-5 text-5xl font-black tracking-[-0.05em] sm:text-6xl">
+            Run deliveries
+            <br />
+            with clarity.
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-lg text-sm leading-7 text-neutral-500">
+            Create orders. Assign riders. Track progress.
+            Keep your entire delivery operation connected.
+          </p>
+
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+
             <Link
               href="/dispatcher"
-              className="rounded-xl bg-[#0b1220] px-7 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5"
+              className="bg-white px-7 py-4 text-sm font-black text-black hover:bg-neutral-200"
             >
               Open Dispatcher
             </Link>
 
             <Link
               href="/rider"
-              className="rounded-xl border border-slate-300 px-7 py-3.5 text-sm font-bold text-[#111827] transition hover:bg-slate-50"
+              className="border border-neutral-700 px-7 py-4 text-sm font-bold text-white hover:border-white"
             >
               Open Rider App
             </Link>
+
           </div>
+
         </div>
+
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/10 bg-[#0b1220] px-6 py-7 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f4b740] text-xs font-black text-[#0b1220]">
+      <footer className="border-t border-neutral-800 bg-black px-6 py-7 text-white lg:px-8">
+
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+
+          <div className="flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center bg-white text-[10px] font-black text-black">
               R
             </div>
 
-            <div>
-              <p className="text-sm font-black text-white">reflex</p>
-              <p className="text-[9px] uppercase tracking-[0.18em] text-slate-600">
-                Delivery operations
-              </p>
-            </div>
+            <span className="font-black">
+              reflex
+            </span>
           </div>
 
-          <p className="text-xs text-slate-600">
+          <span className="text-neutral-600">
             Delivery coordination, simplified.
-          </p>
+          </span>
 
-          <p className="text-xs text-slate-600">
+          <span className="text-neutral-600">
             © 2026 Reflex
-          </p>
+          </span>
+
         </div>
+
       </footer>
+
     </main>
   );
 }
