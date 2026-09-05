@@ -4,14 +4,17 @@ import User from "@/models/User";
 
 export async function GET() {
   try {
+    // Connect to MongoDB
     await connectToDatabase();
 
+    // Find all users whose role is RIDER
     const riders = await User.find(
       { role: "RIDER" },
       {
         _id: 1,
         name: 1,
         email: 1,
+        role: 1,
       }
     ).sort({ name: 1 });
 
