@@ -8,7 +8,7 @@ return ( <main className="min-h-screen bg-slate-50 text-slate-900">
 Reflex </h1> <p className="text-xs text-slate-500">
 Delivery Coordination </p> </div>
 
-```
+
       <div className="flex items-center gap-3">
         <Link
           href="/dispatcher"
@@ -187,7 +187,7 @@ Delivery Coordination </p> </div>
     </div>
   </footer>
 </main>
-```
+
 
 );
 }
